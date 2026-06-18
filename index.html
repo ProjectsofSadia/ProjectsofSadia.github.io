@@ -1,1353 +1,583 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kazi Sadia Anowar - Portfolio</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'primary': '#059669',
-                        'secondary': '#10b981',
-                        'accent': '#f59e0b'
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.6s ease-in',
-                        'slide-up': 'slideUp 0.8s ease-out',
-                        'bounce-slow': 'bounce 3s infinite'
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        .tech-badge {
-            transition: all 0.3s ease;
-        }
-        
-        .tech-badge:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
-        }
-        
-        .project-card {
-            transition: all 0.4s ease;
-        }
-        
-        .project-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-        
-        .skill-bar {
-            transition: width 2s ease-in-out;
-        }
-        
-        .gradient-text {
-            background: linear-gradient(135deg, #059669, #10b981);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .particle {
-            position: absolute;
-            background: linear-gradient(45deg, #059669, #10b981);
-            border-radius: 50%;
-            opacity: 0.1;
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kazi Sadia Anowar — AI Engineer & Motorsports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0B0D;          /* near-black carbon */
+    --bg2:#101216;         /* raised panel */
+    --bg3:#15181D;         /* card */
+    --line:#23272E;        /* hairline */
+    --line2:#2E333B;
+    --txt:#E8EAED;         /* primary text */
+    --mut:#8B9099;         /* muted */
+    --dim:#5A6068;         /* dimmer */
+    --speed:#00E5FF;       /* telemetry cyan */
+    --hot:#FF2D55;         /* DRS/sector red */
+    --amber:#FFB020;       /* sector amber */
+    --green:#00E676;       /* purple sector → use green for "fastest" */
+    --purple:#B388FF;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--txt);
+    font-family:'Archivo',sans-serif;
+    line-height:1.5;-webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--speed);color:#000}
+  a{color:inherit;text-decoration:none}
+  .mono{font-family:'JetBrains Mono',monospace}
+
+  /* ===== ambient telemetry grid ===== */
+  .grid-bg{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(var(--line) 1px,transparent 1px),
+      linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:64px 64px;
+    -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 30%,transparent 75%);
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 30%,transparent 75%);
+    opacity:.5;
+  }
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;position:relative;z-index:2}
+
+  /* ===== nav ===== */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    backdrop-filter:blur(12px);background:rgba(10,11,13,.72);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-in{max-width:1180px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;justify-content:space-between}
+  .logo{font-weight:800;font-size:15px;letter-spacing:-.01em;display:flex;align-items:center;gap:9px}
+  .logo .dot{width:8px;height:8px;border-radius:50%;background:var(--hot);box-shadow:0 0 12px var(--hot);animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .nav-links{display:flex;gap:30px;font-size:13px;font-weight:500}
+  .nav-links a{color:var(--mut);transition:color .2s;position:relative}
+  .nav-links a:hover{color:var(--txt)}
+  .nav-links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:2px;background:var(--speed);transition:width .25s}
+  .nav-links a:hover::after{width:100%}
+  .nav-cta{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--speed);border:1px solid var(--line2);padding:7px 14px;border-radius:6px;transition:all .2s}
+  .nav-cta:hover{border-color:var(--speed);box-shadow:0 0 16px rgba(0,229,255,.25)}
+  @media(max-width:720px){.nav-links{display:none}}
+
+  /* ===== hero ===== */
+  header{padding:160px 0 90px;position:relative}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;
+    color:var(--speed);text-transform:uppercase;margin-bottom:26px;
+    display:flex;align-items:center;gap:12px;
+  }
+  .eyebrow::before{content:"";width:34px;height:1px;background:var(--speed)}
+  h1{
+    font-size:clamp(46px,8vw,104px);font-weight:900;line-height:.92;
+    letter-spacing:-.03em;margin-bottom:8px;
+  }
+  h1 .l2{color:var(--dim);-webkit-text-stroke:1px var(--line2);color:transparent}
+  .role-line{
+    font-family:'JetBrains Mono',monospace;font-size:clamp(13px,2.2vw,17px);
+    color:var(--mut);margin-top:26px;letter-spacing:.02em;
+  }
+  .role-line b{color:var(--txt);font-weight:700}
+  .hero-sub{max-width:620px;margin-top:26px;color:var(--mut);font-size:16.5px;line-height:1.65}
+  .hero-cta{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap}
+  .btn{
+    font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;
+    padding:13px 22px;border-radius:8px;transition:all .2s;display:inline-flex;align-items:center;gap:9px;
+  }
+  .btn-primary{background:var(--speed);color:#000;font-weight:700}
+  .btn-primary:hover{box-shadow:0 0 28px rgba(0,229,255,.45);transform:translateY(-1px)}
+  .btn-ghost{border:1px solid var(--line2);color:var(--txt)}
+  .btn-ghost:hover{border-color:var(--mut);background:var(--bg2)}
+
+  /* ===== live telemetry strip ===== */
+  .telemetry{
+    margin-top:64px;border:1px solid var(--line);border-radius:12px;
+    background:linear-gradient(180deg,var(--bg2),var(--bg));
+    overflow:hidden;
+  }
+  .tele-head{
+    display:flex;align-items:center;gap:10px;padding:11px 18px;
+    border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:.14em;color:var(--dim);text-transform:uppercase;
+  }
+  .tele-head .live{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 1.4s infinite}
+  .tele-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+  .tele-cell{padding:22px 18px;border-right:1px solid var(--line)}
+  .tele-cell:last-child{border-right:none}
+  .tele-val{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;letter-spacing:-.02em;line-height:1}
+  .tele-val .u{font-size:14px;color:var(--dim);font-weight:400;margin-left:4px}
+  .tele-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;margin-top:10px}
+  .c-speed{color:var(--speed)} .c-hot{color:var(--hot)} .c-amber{color:var(--amber)} .c-green{color:var(--green)}
+  @media(max-width:720px){.tele-grid{grid-template-columns:repeat(2,1fr)}.tele-cell:nth-child(2){border-right:none}.tele-cell:nth-child(1),.tele-cell:nth-child(2){border-bottom:1px solid var(--line)}}
+
+  /* ===== section scaffolding ===== */
+  section{padding:90px 0;position:relative}
+  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:48px;border-bottom:1px solid var(--line);padding-bottom:18px}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--hot);font-weight:700}
+  .sec-title{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-.02em}
+  .sec-meta{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim);letter-spacing:.08em}
+
+  /* ===== projects ===== */
+  .proj{
+    border:1px solid var(--line);border-radius:14px;background:var(--bg3);
+    margin-bottom:20px;overflow:hidden;transition:border-color .25s,transform .25s;
+  }
+  .proj:hover{border-color:var(--line2);transform:translateY(-2px)}
+  .proj-top{
+    display:flex;align-items:flex-start;justify-content:space-between;gap:20px;
+    padding:26px 28px 0;cursor:pointer;
+  }
+  .proj-tag{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase;padding:4px 10px;border-radius:5px;white-space:nowrap;
+    border:1px solid var(--line2);
+  }
+  .tag-f1{color:var(--hot);border-color:rgba(255,45,85,.4)}
+  .tag-ai{color:var(--speed);border-color:rgba(0,229,255,.4)}
+  .proj-name{font-size:24px;font-weight:800;letter-spacing:-.01em;margin-bottom:6px}
+  .proj-tagline{color:var(--mut);font-size:14.5px;max-width:560px}
+  .proj-body{padding:20px 28px 28px}
+  .proj-stack{display:flex;flex-wrap:wrap;gap:7px;margin:18px 0}
+  .chip{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--mut);background:var(--bg2);border:1px solid var(--line);padding:4px 10px;border-radius:5px}
+  .proj-detail{
+    max-height:0;overflow:hidden;transition:max-height .4s ease;
+    border-top:1px solid transparent;
+  }
+  .proj.open .proj-detail{max-height:600px;border-top-color:var(--line);margin-top:20px;padding-top:20px}
+  .proj-detail ul{list-style:none}
+  .proj-detail li{
+    position:relative;padding-left:22px;margin-bottom:11px;color:var(--mut);font-size:14.5px;line-height:1.6;
+  }
+  .proj-detail li::before{content:"›";position:absolute;left:0;color:var(--speed);font-weight:700}
+  .proj-detail li b{color:var(--txt);font-weight:600}
+  .proj-foot{display:flex;align-items:center;gap:18px;margin-top:18px;font-family:'JetBrains Mono',monospace;font-size:12px}
+  .proj-foot a{color:var(--speed);display:flex;align-items:center;gap:6px;transition:opacity .2s}
+  .proj-foot a:hover{opacity:.7}
+  .expand{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim);display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none}
+  .expand .x{transition:transform .3s;color:var(--speed);font-size:15px}
+  .proj.open .expand .x{transform:rotate(45deg)}
+  .proj-metric{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--green);font-weight:700;white-space:nowrap}
+
+  /* ===== skills ===== */
+  .skill-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  @media(max-width:720px){.skill-grid{grid-template-columns:1fr}}
+  .skill-card{border:1px solid var(--line);border-radius:12px;background:var(--bg3);padding:24px}
+  .skill-card h3{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--speed);margin-bottom:16px;display:flex;align-items:center;gap:9px}
+  .skill-card h3 .n{color:var(--dim)}
+  .skill-tags{display:flex;flex-wrap:wrap;gap:7px}
+  .skill-tags span{font-size:13px;color:var(--mut);background:var(--bg2);border:1px solid var(--line);padding:5px 11px;border-radius:6px;transition:all .2s}
+  .skill-card:hover .skill-tags span{border-color:var(--line2)}
+
+  /* ===== experience timeline ===== */
+  .xp{position:relative;padding-left:30px;border-left:1px solid var(--line)}
+  .xp-item{position:relative;padding-bottom:36px}
+  .xp-item:last-child{padding-bottom:0}
+  .xp-item::before{content:"";position:absolute;left:-35px;top:5px;width:9px;height:9px;border-radius:50%;background:var(--bg);border:2px solid var(--speed)}
+  .xp-item.now::before{background:var(--hot);border-color:var(--hot);box-shadow:0 0 12px var(--hot)}
+  .xp-date{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim);letter-spacing:.06em;margin-bottom:6px}
+  .xp-role{font-size:18px;font-weight:700}
+  .xp-co{color:var(--speed);font-size:14px;font-family:'JetBrains Mono',monospace;margin-bottom:10px}
+  .xp-item p{color:var(--mut);font-size:14.5px;max-width:620px}
+
+  /* ===== recognition banner ===== */
+  .badge-row{display:grid;grid-template-columns:1.4fr 1fr;gap:18px}
+  @media(max-width:720px){.badge-row{grid-template-columns:1fr}}
+  .badge{border:1px solid var(--line);border-radius:12px;padding:26px;background:linear-gradient(180deg,var(--bg3),var(--bg2))}
+  .badge .flag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--hot);margin-bottom:12px}
+  .badge h4{font-size:20px;font-weight:800;margin-bottom:6px}
+  .badge p{color:var(--mut);font-size:14px}
+
+  /* ===== contact ===== */
+  .contact{text-align:center;padding:110px 0 90px}
+  .contact .eyebrow{justify-content:center}
+  .contact .eyebrow::before{display:none}
+  .contact h2{font-size:clamp(36px,7vw,76px);font-weight:900;letter-spacing:-.03em;line-height:1;margin-bottom:28px}
+  .contact-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+  .contact-links a{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--mut);border:1px solid var(--line2);padding:12px 22px;border-radius:8px;transition:all .2s}
+  .contact-links a:hover{color:var(--speed);border-color:var(--speed);box-shadow:0 0 18px rgba(0,229,255,.2)}
+
+  footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--dim)}
+
+  /* reveal on scroll */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .reveal{opacity:1;transform:none}
+  }
+</style>
 </head>
-<body class="bg-gray-50 font-sans">
-    <!-- Animated Background Particles -->
-    <div class="fixed inset-0 overflow-hidden pointer-events-none">
-        <div class="particle w-2 h-2 top-10 left-10 animation-delay-0"></div>
-        <div class="particle w-3 h-3 top-20 right-20 animation-delay-1000"></div>
-        <div class="particle w-1 h-1 top-1/2 left-1/4 animation-delay-2000"></div>
-        <div class="particle w-2 h-2 bottom-20 right-1/3 animation-delay-3000"></div>
-        <div class="particle w-4 h-4 bottom-40 left-20 animation-delay-4000"></div>
+<body>
+<div class="grid-bg"></div>
+
+<nav>
+  <div class="nav-in">
+    <div class="logo"><span class="dot"></span>K.S. ANOWAR</div>
+    <div class="nav-links">
+      <a href="#projects">Projects</a>
+      <a href="#skills">Stack</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a class="nav-cta" href="#contact">GET IN TOUCH</a>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">AI Engineer · Motorsports · Brooklyn, NY</div>
+    <h1>KAZI SADIA<br>ANOWAR</h1>
+    <div class="role-line"><b>AI Engineer</b> × <b>Race Strategy Intelligence</b> × <b>Real-Time Telemetry</b></div>
+    <p class="hero-sub">
+      Computer Science and Artificial Intelligence student building agentic AI systems,
+      real-time telemetry pipelines, and LLM-powered applications deployed to production.
+      I work at the intersection of machine learning and motorsport, where milliseconds and model
+      accuracy both decide the outcome.
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#projects">VIEW PROJECTS →</a>
+      <a class="btn btn-ghost" href="#contact">DOWNLOAD RESUME</a>
     </div>
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50 transition-all">
-        <div class="max-w-7xl mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <div class="text-2xl font-bold gradient-text">Sadia Anowar</div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#home" class="text-gray-700 hover:text-primary transition-colors">Home</a>
-                    <a href="#about" class="text-gray-700 hover:text-primary transition-colors">About</a>
-                    <a href="#projects" class="text-gray-700 hover:text-primary transition-colors">Projects</a>
-                    <a href="#skills" class="text-gray-700 hover:text-primary transition-colors">Skills</a>
-                    <a href="#experience" class="text-gray-700 hover:text-primary transition-colors">Experience</a>
-                    <a href="#contact" class="text-gray-700 hover:text-primary transition-colors">Contact</a>
-                </div>
-                <button class="md:hidden">
-                    <i class="fas fa-bars text-gray-700"></i>
-                </button>
-            </div>
+    <!-- live telemetry strip = the signature element -->
+    <div class="telemetry reveal">
+      <div class="tele-head"><span class="live"></span>CAREER TELEMETRY · LIVE FEED</div>
+      <div class="tele-grid">
+        <div class="tele-cell">
+          <div class="tele-val c-speed" data-count="84000">0<span class="u">+</span></div>
+          <div class="tele-label">Telemetry frames processed</div>
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 relative">
-        <div class="max-w-7xl mx-auto px-6 text-center animate-fade-in">
-            <div class="mb-8">
-                <div class="w-40 h-40 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white text-6xl shadow-2xl">
-                    <span class="text-4xl font-bold">SA</span>
-                </div>
-                <h1 class="text-5xl md:text-7xl font-bold text-gray-800 mb-4">
-                    Hi, I'm <span class="gradient-text">Sadia</span>
-                </h1>
-                <p class="text-xl md:text-2xl text-gray-600 mb-6 max-w-3xl mx-auto">
-                    Computer Science Student & Full-Stack Developer specializing in AI/ML, Web Development, and Data Science
-                </p>
-                <div class="flex flex-wrap justify-center gap-4 mb-8">
-                    <span class="px-4 py-2 bg-primary/10 text-primary rounded-full font-medium">AI & Machine Learning</span>
-                    <span class="px-4 py-2 bg-secondary/10 text-secondary rounded-full font-medium">Full-Stack Development</span>
-                    <span class="px-4 py-2 bg-accent/10 text-accent rounded-full font-medium">Data Science</span>
-                </div>
-                <div class="flex justify-center space-x-6">
-                    <a href="#projects" class="bg-primary hover:bg-green-700 text-white px-8 py-3 rounded-lg font-medium transition-all transform hover:scale-105 shadow-lg">
-                        View My Projects
-                    </a>
-                    <a href="#contact" class="border-2 border-primary text-primary hover:bg-primary hover:text-white px-8 py-3 rounded-lg font-medium transition-all">
-                        Get In Touch
-                    </a>
-                </div>
-            </div>
+        <div class="tele-cell">
+          <div class="tele-val c-hot" data-count="1400">0<span class="u">+</span></div>
+          <div class="tele-label">Race laps ingested</div>
         </div>
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce-slow">
-            <i class="fas fa-chevron-down text-primary text-2xl"></i>
+        <div class="tele-cell">
+          <div class="tele-val c-amber" data-count="5">0</div>
+          <div class="tele-label">Production AI systems</div>
         </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16 animate-slide-up">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">About Me</h2>
-                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    A passionate Computer Science student at NYIT with expertise in AI, web development, and data analysis
-                </p>
-            </div>
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="animate-slide-up">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-6">My Journey</h3>
-                    <p class="text-gray-600 mb-6 leading-relaxed">
-                        Currently pursuing my Bachelor's in Computer Science at New York Institute of Technology (2025-2029), 
-                        I'm passionate about leveraging technology to solve real-world problems. My experience spans from 
-                        healthcare technology to sustainable development research.
-                    </p>
-                    <p class="text-gray-600 mb-6 leading-relaxed">
-                        I've built expertise in AI/ML, full-stack development, and data science through hands-on projects 
-                        ranging from intelligent pest monitoring systems to advanced facial analytics pipelines.
-                    </p>
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="text-center p-6 bg-primary/5 rounded-lg">
-                            <div class="text-3xl font-bold text-primary mb-2">5+</div>
-                            <div class="text-gray-600">Major Projects</div>
-                        </div>
-                        <div class="text-center p-6 bg-secondary/5 rounded-lg">
-                            <div class="text-3xl font-bold text-secondary mb-2">3+</div>
-                            <div class="text-gray-600">Years Experience</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="animate-slide-up">
-                    <div class="bg-gradient-to-br from-primary/10 to-secondary/10 p-8 rounded-2xl">
-                        <h3 class="text-2xl font-bold text-gray-800 mb-6">Education & Achievements</h3>
-                        <div class="space-y-4">
-                            <div class="flex items-start space-x-4">
-                                <div class="w-3 h-3 bg-primary rounded-full mt-2"></div>
-                                <div>
-                                    <h4 class="font-bold text-gray-800">Bachelor's in Computer Science</h4>
-                                    <p class="text-gray-600">New York Institute of Technology (2025-2029)</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start space-x-4">
-                                <div class="w-3 h-3 bg-secondary rounded-full mt-2"></div>
-                                <div>
-                                    <h4 class="font-bold text-gray-800">Senator - NYC Women Empowerment</h4>
-                                    <p class="text-gray-600">Leadership & Community Development (2025)</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start space-x-4">
-                                <div class="w-3 h-3 bg-accent rounded-full mt-2"></div>
-                                <div>
-                                    <h4 class="font-bold text-gray-800">Research Experience</h4>
-                                    <p class="text-gray-600">Sustainable Development Goals Research</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="tele-cell">
+          <div class="tele-val c-green" data-count="2026">0</div>
+          <div class="tele-label">F-Student AI Judge · Silverstone</div>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</header>
 
-    <!-- Projects Section -->
-    <section id="projects" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">Featured Projects</h2>
-                <p class="text-xl text-gray-600">Innovative solutions across AI, web development, and data science</p>
-            </div>
-            
-            <!-- Project Grid -->
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- AgriGuard Project -->
-                <div class="project-card bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <div class="bg-gradient-to-br from-green-500 to-emerald-600 h-48 flex items-center justify-center">
-                        <div class="text-center text-white">
-                            <i class="fas fa-seedling text-6xl mb-4"></i>
-                            <h3 class="text-2xl font-bold">AgriGuard</h3>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h4 class="text-xl font-bold text-gray-800 mb-3">Smart Pest Monitoring</h4>
-                        <p class="text-gray-600 mb-4">
-                            AI-powered pest detection system using computer vision and machine learning 
-                            to help farmers protect their crops with real-time monitoring and recommendations.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="px-3 py-1 bg-green-100 text-green-700 text-sm rounded-full">JavaScript</span>
-                            <span class="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full">AI/ML</span>
-                            <span class="px-3 py-1 bg-purple-100 text-purple-700 text-sm rounded-full">Computer Vision</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <a href="#" onclick="showProjectCode('agriguard')" class="text-primary hover:text-green-700 font-medium">
-                                <i class="fab fa-github mr-2"></i>View Code
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- F1 Prediction Model -->
-                <div class="project-card bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <div class="bg-gradient-to-br from-red-500 to-orange-600 h-48 flex items-center justify-center">
-                        <div class="text-center text-white">
-                            <i class="fas fa-trophy text-6xl mb-4"></i>
-                            <h3 class="text-2xl font-bold">F1 Predictor</h3>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h4 class="text-xl font-bold text-gray-800 mb-3">Race Winner Prediction</h4>
-                        <p class="text-gray-600 mb-4">
-                            Machine learning model that predicts F1 race winners using ensemble methods, 
-                            historical data analysis, and real-time performance metrics.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="px-3 py-1 bg-red-100 text-red-700 text-sm rounded-full">Machine Learning</span>
-                            <span class="px-3 py-1 bg-orange-100 text-orange-700 text-sm rounded-full">Data Science</span>
-                            <span class="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full">Predictive Analytics</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <a href="#" onclick="showProjectCode('f1predictor')" class="text-primary hover:text-green-700 font-medium">
-                                <i class="fab fa-github mr-2"></i>View Code
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- EcoSentinel Platform -->
-                <div class="project-card bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <div class="bg-gradient-to-br from-cyan-500 to-blue-600 h-48 flex items-center justify-center">
-                        <div class="text-center text-white">
-                            <i class="fas fa-globe text-6xl mb-4"></i>
-                            <h3 class="text-2xl font-bold">EcoSentinel</h3>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h4 class="text-xl font-bold text-gray-800 mb-3">Climate Management Platform</h4>
-                        <p class="text-gray-600 mb-4">
-                            Comprehensive climate monitoring system with real-time data processing, 
-                            IoT sensor integration, and advanced analytics dashboard.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="px-3 py-1 bg-cyan-100 text-cyan-700 text-sm rounded-full">IoT</span>
-                            <span class="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full">Real-time Data</span>
-                            <span class="px-3 py-1 bg-green-100 text-green-700 text-sm rounded-full">Environment</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <a href="#" onclick="showProjectCode('ecosentinel')" class="text-primary hover:text-green-700 font-medium">
-                                <i class="fab fa-github mr-2"></i>View Code
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SkinGlow AI -->
-                <div class="project-card bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <div class="bg-gradient-to-br from-pink-500 to-purple-600 h-48 flex items-center justify-center">
-                        <div class="text-center text-white">
-                            <i class="fas fa-spa text-6xl mb-4"></i>
-                            <h3 class="text-2xl font-bold">SkinGlow AI</h3>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h4 class="text-xl font-bold text-gray-800 mb-3">AI Skincare Analysis</h4>
-                        <p class="text-gray-600 mb-4">
-                            AI-powered skincare analysis platform with personalized recommendations, 
-                            product matching, and comprehensive beauty analytics.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="px-3 py-1 bg-pink-100 text-pink-700 text-sm rounded-full">React</span>
-                            <span class="px-3 py-1 bg-purple-100 text-purple-700 text-sm rounded-full">AI Analysis</span>
-                            <span class="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full">E-commerce</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <a href="#" onclick="showProjectCode('skinglowai')" class="text-primary hover:text-green-700 font-medium">
-                                <i class="fab fa-github mr-2"></i>View Code
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Facial Analytics Pipeline -->
-                <div class="project-card bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <div class="bg-gradient-to-br from-indigo-500 to-purple-600 h-48 flex items-center justify-center">
-                        <div class="text-center text-white">
-                            <i class="fas fa-eye text-6xl mb-4"></i>
-                            <h3 class="text-2xl font-bold">Facial Analytics</h3>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h4 class="text-xl font-bold text-gray-800 mb-3">Computer Vision Pipeline</h4>
-                        <p class="text-gray-600 mb-4">
-                            Advanced facial recognition and analytics system using OpenCV, 
-                            with multi-threading, batch processing, and comprehensive reporting.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="px-3 py-1 bg-indigo-100 text-indigo-700 text-sm rounded-full">Python</span>
-                            <span class="px-3 py-1 bg-purple-100 text-purple-700 text-sm rounded-full">OpenCV</span>
-                            <span class="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full">Computer Vision</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <a href="#" onclick="showProjectCode('facialanalytics')" class="text-primary hover:text-green-700 font-medium">
-                                <i class="fab fa-github mr-2"></i>View Code
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- GitHub Portfolio -->
-                <div class="project-card bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <div class="bg-gradient-to-br from-gray-700 to-gray-900 h-48 flex items-center justify-center">
-                        <div class="text-center text-white">
-                            <i class="fab fa-github text-6xl mb-4"></i>
-                            <h3 class="text-2xl font-bold">More Projects</h3>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <h4 class="text-xl font-bold text-gray-800 mb-3">GitHub Repository</h4>
-                        <p class="text-gray-600 mb-4">
-                            Explore my complete portfolio of projects on GitHub, including 
-                            additional experiments, learning projects, and code samples.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-full">Open Source</span>
-                            <span class="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full">Portfolio</span>
-                            <span class="px-3 py-1 bg-green-100 text-green-700 text-sm rounded-full">Collaboration</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <a href="https://github.com/ProjectsofSadia" target="_blank" class="text-primary hover:text-green-700 font-medium">
-                                <i class="fab fa-github mr-2"></i>View All Projects
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">Technical Skills</h2>
-                <p class="text-xl text-gray-600">Technologies and tools I work with</p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Programming Languages -->
-                <div class="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-2xl">
-                    <div class="text-center mb-6">
-                        <i class="fas fa-code text-4xl text-primary mb-4"></i>
-                        <h3 class="text-xl font-bold text-gray-800">Programming Languages</h3>
-                    </div>
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="font-medium">Python</span>
-                            <div class="w-32 bg-gray-200 rounded-full h-2">
-                                <div class="skill-bar bg-primary h-2 rounded-full" style="width: 90%"></div>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="font-medium">JavaScript</span>
-                            <div class="w-32 bg-gray-200 rounded-full h-2">
-                                <div class="skill-bar bg-primary h-2 rounded-full" style="width: 85%"></div>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="font-medium">Java</span>
-                            <div class="w-32 bg-gray-200 rounded-full h-2">
-                                <div class="skill-bar bg-primary h-2 rounded-full" style="width: 80%"></div>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="font-medium">SQL</span>
-                            <div class="w-32 bg-gray-200 rounded-full h-2">
-                                <div class="skill-bar bg-primary h-2 rounded-full" style="width: 75%"></div>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="font-medium">MATLAB</span>
-                            <div class="w-32 bg-gray-200 rounded-full h-2">
-                                <div class="skill-bar bg-primary h-2 rounded-full" style="width: 70%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Frameworks & Technologies -->
-                <div class="bg-gradient-to-br from-emerald-50 to-teal-50 p-8 rounded-2xl">
-                    <div class="text-center mb-6">
-                        <i class="fas fa-layer-group text-4xl text-secondary mb-4"></i>
-                        <h3 class="text-xl font-bold text-gray-800">Frameworks & Technologies</h3>
-                    </div>
-                    <div class="flex flex-wrap gap-3">
-                        <span class="tech-badge px-3 py-2 bg-white rounded-lg shadow-sm border text-sm font-medium">React</span>
-                        <span class="tech-badge px-3 py-2 bg-white rounded-lg shadow-sm border text-sm font-medium">Node.js</span>
-                        <span class="tech-badge px-3 py-2 bg-white rounded-lg shadow-sm border text-sm font-medium">OpenCV</span>
-                        <span class="tech-badge px-3 py-2 bg-white rounded-lg shadow-sm border text-sm font-medium">TensorFlow</span>
-                        <span class="tech-badge px-3 py-2 bg-white rounded-lg shadow-sm border text-sm font-medium">Pandas</span>
-                        <span class="tech-badge px-3 py-2 bg-white rounded-lg shadow-sm border text-sm font-medium">NumPy</span>
-                        <span class="tech-badge px-3 py-2 bg-white rounded-lg shadow-sm border text-sm font-medium">Scikit-learn</span>
-                        <span class="tech-badge px-3 py-2 bg-white rounded-lg shadow-sm border text-sm font-medium">Express.js</span>
-                        <span class="tech-badge px-3 py-2 bg-white rounded-lg shadow-sm border text-sm font-medium">MongoDB</span>
-                        <span class="tech-badge px-3 py-2 bg-white rounded-lg shadow-sm border text-sm font-medium">PostgreSQL</span>
-                    </div>
-                </div>
-
-                <!-- Tools & Specializations -->
-                <div class="bg-gradient-to-br from-teal-50 to-green-50 p-8 rounded-2xl">
-                    <div class="text-center mb-6">
-                        <i class="fas fa-tools text-4xl text-accent mb-4"></i>
-                        <h3 class="text-xl font-bold text-gray-800">Tools & Specializations</h3>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-robot text-primary"></i>
-                            <span class="font-medium">AI & Machine Learning</span>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-brain text-secondary"></i>
-                            <span class="font-medium">Prompt Engineering</span>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-shield-alt text-accent"></i>
-                            <span class="font-medium">Ethical AI</span>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-chart-bar text-primary"></i>
-                            <span class="font-medium">Tableau</span>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-bug text-secondary"></i>
-                            <span class="font-medium">Selenium Testing</span>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-tasks text-accent"></i>
-                            <span class="font-medium">Jira</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Experience Section -->
-    <section id="experience" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">Experience</h2>
-                <p class="text-xl text-gray-600">My professional journey and achievements</p>
-            </div>
-
-            <div class="space-y-8">
-                <!-- Current Position -->
-                <div class="bg-white rounded-2xl shadow-lg p-8 border-l-4 border-primary">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
-                        <div>
-                            <h3 class="text-xl font-bold text-gray-800">Customer Service Specialist</h3>
-                            <p class="text-primary font-medium">Marks Home Care Agency</p>
-                        </div>
-                        <span class="text-gray-600 font-medium">2024 - Present</span>
-                    </div>
-                    <ul class="space-y-2 text-gray-600">
-                        <li class="flex items-start space-x-2">
-                            <i class="fas fa-check text-green-500 mt-1"></i>
-                            <span>Handle customer inquiries, schedule appointments and assign caregivers to meet clients' needs</span>
-                        </li>
-                        <li class="flex items-start space-x-2">
-                            <i class="fas fa-check text-green-500 mt-1"></i>
-                            <span>Maintain accurate client records, ensuring compliance with company policy and regulatory requirements</span>
-                        </li>
-                        <li class="flex items-start space-x-2">
-                            <i class="fas fa-check text-green-500 mt-1"></i>
-                            <span>Achieved highest enrollment in a month and successfully completed new campaign within 2 months</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Previous Position -->
-                <div class="bg-white rounded-2xl shadow-lg p-8 border-l-4 border-secondary">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
-                        <div>
-                            <h3 class="text-xl font-bold text-gray-800">Pharmacy Technician</h3>
-                            <p class="text-secondary font-medium">Newkirk Pharmacy</p>
-                        </div>
-                        <span class="text-gray-600 font-medium">2023 - 2024</span>
-                    </div>
-                    <ul class="space-y-2 text-gray-600">
-                        <li class="flex items-start space-x-2">
-                            <i class="fas fa-check text-green-500 mt-1"></i>
-                            <span>Maintained up-to-date patient profiles and insurance information using pharmacy management systems</span>
-                        </li>
-                        <li class="flex items-start space-x-2">
-                            <i class="fas fa-check text-green-500 mt-1"></i>
-                            <span>Delivered exceptional customer service and trained new staff in daily operations and compliance procedures</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Leadership Experience -->
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-6 border">
-                        <div class="flex items-center mb-4">
-                            <i class="fas fa-users text-green-600 text-2xl mr-3"></i>
-                            <div>
-                                <h3 class="font-bold text-gray-800">Senator</h3>
-                                <p class="text-green-600">NYC Women Empowerment</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 text-sm">Leading initiatives for women's empowerment and community development in New York City (2025)</p>
-                    </div>
-                    
-                    <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-2xl p-6 border">
-                        <div class="flex items-center mb-4">
-                            <i class="fas fa-graduation-cap text-teal-600 text-2xl mr-3"></i>
-                            <div>
-                                <h3 class="font-bold text-gray-800">Vice President</h3>
-                                <p class="text-teal-600">Parents' Association - PS-217</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 text-sm">Leading parent engagement and educational initiatives at Colonel David Marcus School, Brooklyn (2024)</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-800 mb-4">Get In Touch</h2>
-                <p class="text-xl text-gray-600">Let's connect and discuss opportunities</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Let's Work Together</h3>
-                    <p class="text-gray-600 mb-8 leading-relaxed">
-                        I'm always interested in new opportunities, especially in AI/ML, full-stack development, 
-                        or data science roles. Whether you want to collaborate on a project or just say hi, 
-                        I'd love to hear from you!
-                    </p>
-                    
-                    <div class="space-y-4">
-                        <div class="flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-envelope text-primary"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-medium text-gray-800">Email</h4>
-                                <a href="mailto:sadia.anowar@example.com" class="text-primary hover:text-green-700">
-                                    Contact via Email
-                                </a>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center">
-                                <i class="fab fa-linkedin text-secondary"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-medium text-gray-800">LinkedIn</h4>
-                                <a href="https://linkedin.com/in/kazi-sadia-anowar" class="text-secondary hover:text-purple-700">
-                                    Connect with me
-                                </a>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                                <i class="fab fa-github text-gray-700"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-medium text-gray-800">GitHub</h4>
-                                <a href="https://github.com/ProjectsofSadia" class="text-gray-700 hover:text-gray-900">
-                                    @ProjectsofSadia
-                                </a>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-phone text-green-600"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-medium text-gray-800">Phone</h4>
-                                <span class="text-gray-600">929-877-4387</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-gradient-to-br from-primary/5 to-secondary/5 p-8 rounded-2xl">
-                    <h3 class="text-xl font-bold text-gray-800 mb-6">Quick Contact Form</h3>
-                    <form class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
-                            <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                            <input type="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Message</label>
-                            <textarea rows="4" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Tell me about your project or opportunity..."></textarea>
-                        </div>
-                        <button type="submit" class="w-full bg-primary hover:bg-blue-700 text-white py-3 rounded-lg font-medium transition-all transform hover:scale-105">
-                            Send Message
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Project Code Modal -->
-    <div id="codeModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
-            <div class="flex justify-between items-center p-6 border-b">
-                <h3 id="codeModalTitle" class="text-2xl font-bold text-gray-800"></h3>
-                <button onclick="closeCodeModal()" class="text-gray-500 hover:text-gray-700 text-2xl">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="flex-1 overflow-auto p-6">
-                <div id="codeContent" class="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm overflow-auto">
-                    <!-- Code content will be inserted here -->
-                </div>
-            </div>
-            <div class="p-6 border-t bg-gray-50">
-                <div class="flex justify-between items-center">
-                    <span class="text-sm text-gray-600">Click to copy code sections</span>
-                    <a id="githubLink" href="#" target="_blank" class="bg-primary hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-all">
-                        <i class="fab fa-github mr-2"></i>View on GitHub
-                    </a>
-                </div>
-            </div>
-        </div>
+<!-- ===== PROJECTS ===== -->
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">01</span>
+      <span class="sec-title">Projects</span>
+      <span class="sec-meta">5 SHIPPED · CLICK TO EXPAND</span>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center">
-                <div class="text-2xl font-bold gradient-text mb-4">Kazi Sadia Anowar</div>
-                <p class="text-gray-400 mb-6">Computer Science Student & Full-Stack Developer</p>
-                <div class="flex justify-center space-x-6 mb-8">
-                    <a href="https://github.com/ProjectsofSadia" class="text-gray-400 hover:text-white transition-colors">
-                        <i class="fab fa-github text-2xl"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/asadia/" target="_blank" class="text-gray-400 hover:text-white transition-colors">
-                        <i class="fab fa-linkedin text-2xl"></i>
-                    </a>
-                    <a href="mailto:contact@sadianowar.dev" class="text-gray-400 hover:text-white transition-colors">
-                        <i class="fas fa-envelope text-2xl"></i>
-                    </a>
-                </div>
-                <div class="border-t border-gray-700 pt-8">
-                    <p class="text-gray-400 text-sm">
-                        © 2024 Kazi Sadia Anowar. All rights reserved. Built with passion and code.
-                    </p>
-                </div>
-            </div>
+    <!-- RaceCast -->
+    <div class="proj reveal">
+      <div class="proj-top" onclick="toggleProj(this)">
+        <div>
+          <div class="proj-name">RaceCast</div>
+          <div class="proj-tagline">Real-time Formula 1 telemetry analytics platform streaming live race data sub-second.</div>
         </div>
-    </footer>
+        <span class="proj-tag tag-f1">F1 · TELEMETRY</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-stack">
+          <span class="chip">Python</span><span class="chip">FastAPI</span><span class="chip">PostgreSQL</span>
+          <span class="chip">Redis</span><span class="chip">WebSockets</span><span class="chip">Next.js</span>
+          <span class="chip">Docker</span><span class="chip">FastF1</span>
+        </div>
+        <div class="expand" onclick="toggleProj(this.closest('.proj').querySelector('.proj-top'))">
+          <span class="x">+</span> <span>READ THE BUILD</span>
+          <span class="proj-metric" style="margin-left:auto">84,000+ FRAMES</span>
+        </div>
+        <div class="proj-detail">
+          <ul>
+            <li>Architected and deployed a production-grade real-time telemetry platform ingesting 84,000+ telemetry frames and 1,400+ race laps from live Monaco 2025 race data.</li>
+            <li>The hard part was streaming: my first version pushed every frame to the client and choked, so I added Redis as a buffer and batched frames intelligently to keep it real-time without overwhelming the connection.</li>
+            <li>Designed REST APIs, WebSocket streaming pipelines, and cloud ingestion services with uptime monitoring and CI/CD deployment across Vercel, Render, and Neon.</li>
+          </ul>
+          <div class="proj-foot">
+            <a href="https://github.com/ProjectsofSadia" target="_blank">↗ GitHub</a>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <!-- Smooth Scrolling Script -->
-    <script>
-        // Project code data
-        const projectCodes = {
-            agriguard: {
-                title: "AgriGuard - Smart Pest Monitoring",
-                github: "https://github.com/ProjectsofSadia/agriguard",
-                code: `// AgriGuard - AI-Powered Pest Detection System
-// Main Application Component
+    <!-- PitWall AI -->
+    <div class="proj reveal">
+      <div class="proj-top" onclick="toggleProj(this)">
+        <div>
+          <div class="proj-name">PitWall AI</div>
+          <div class="proj-tagline">An LLM-powered race strategy agent that predicts pit windows and explains its reasoning.</div>
+        </div>
+        <span class="proj-tag tag-f1">F1 · AGENTIC AI</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-stack">
+          <span class="chip">LangGraph</span><span class="chip">Anthropic API</span><span class="chip">XGBoost</span>
+          <span class="chip">Monte Carlo</span><span class="chip">FastF1</span><span class="chip">PostgreSQL</span><span class="chip">FastAPI</span>
+        </div>
+        <div class="expand" onclick="toggleProj(this.closest('.proj').querySelector('.proj-top'))">
+          <span class="x">+</span> <span>READ THE BUILD</span>
+          <span class="proj-metric" style="margin-left:auto">1,000+ SIMS</span>
+        </div>
+        <div class="proj-detail">
+          <ul>
+            <li>Building an LLM-powered strategy agent that runs 1,000+ Monte Carlo race simulations and generates pit window recommendations with confidence scores and natural-language reasoning.</li>
+            <li>Developing an XGBoost tire degradation model trained on 3 seasons of FastF1 data, targeting accuracy above the published 70.59% F1 AI research benchmark.</li>
+            <li>Designed a four-node LangGraph pipeline: telemetry ingestion → Monte Carlo simulation → LLM reasoning synthesis → structured strategy output.</li>
+          </ul>
+          <div class="proj-foot">
+            <a href="https://github.com/ProjectsofSadia" target="_blank">↗ GitHub</a>
+          </div>
+        </div>
+      </div>
+    </div>
 
-class AdvancedSensorSimulator {
-    constructor(config) {
-        this.nodeId = config.nodeId;
-        this.location = config.location;
-        this.city = config.city;
-        this.sensorTypes = config.sensorTypes || ['temperature', 'co2', 'air_quality', 'humidity'];
-        this.apiUrl = config.apiUrl || 'http://localhost:3001';
-        this.isRunning = false;
-        this.intervalId = null;
+    <!-- PitWall Sim -->
+    <div class="proj reveal">
+      <div class="proj-top" onclick="toggleProj(this)">
+        <div>
+          <div class="proj-name">PitWall Sim</div>
+          <div class="proj-tagline">Backtestable Monte Carlo race strategy simulator validated against real race outcomes.</div>
+        </div>
+        <span class="proj-tag tag-f1">F1 · SIMULATION</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-stack">
+          <span class="chip">Python</span><span class="chip">FastF1</span><span class="chip">f1db</span>
+          <span class="chip">Monte Carlo</span><span class="chip">NumPy</span><span class="chip">Pandas</span>
+        </div>
+        <div class="expand" onclick="toggleProj(this.closest('.proj').querySelector('.proj-top'))">
+          <span class="x">+</span> <span>READ THE BUILD</span>
+          <span class="proj-metric" style="margin-left:auto">VALIDATED</span>
+        </div>
+        <div class="proj-detail">
+          <ul>
+            <li>Built a backtestable Monte Carlo simulator modelling tire degradation, safety car probability, and undercut windows across historical F1 seasons.</li>
+            <li>Generated probabilistic strategy outputs with confidence intervals across 1,000+ simulated scenarios per session, validated against known race outcomes.</li>
+            <li>Designed a reproducible engine with configurable compound, circuit, and weather parameters for multi-strategy comparison.</li>
+          </ul>
+          <div class="proj-foot">
+            <a href="https://github.com/ProjectsofSadia" target="_blank">↗ GitHub</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Zenith -->
+    <div class="proj reveal">
+      <div class="proj-top" onclick="toggleProj(this)">
+        <div>
+          <div class="proj-name">Zenith</div>
+          <div class="proj-tagline">Multi-agent AI career intelligence platform with live job data and explainable recommendations.</div>
+        </div>
+        <span class="proj-tag tag-ai">AI · AGENTS</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-stack">
+          <span class="chip">LangGraph</span><span class="chip">OpenAI API</span><span class="chip">Anthropic API</span>
+          <span class="chip">FastAPI</span><span class="chip">React</span><span class="chip">Adzuna API</span>
+        </div>
+        <div class="expand" onclick="toggleProj(this.closest('.proj').querySelector('.proj-top'))">
+          <span class="x">+</span> <span>READ THE BUILD</span>
+          <span class="proj-metric" style="margin-left:auto">100+ CATEGORIES</span>
+        </div>
+        <div class="proj-detail">
+          <ul>
+            <li>Engineered a multi-agent LangGraph system ingesting live job listings via Adzuna API, scoring role fit with LLM evaluation frameworks.</li>
+            <li>Generated explainable career roadmaps across 100+ job categories with a transparent AI scoring engine.</li>
+            <li>Implemented prompt engineering patterns for consistent agent output quality and structured evaluation pipelines.</li>
+          </ul>
+          <div class="proj-foot">
+            <a href="https://github.com/ProjectsofSadia" target="_blank">↗ GitHub</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cleaf -->
+    <div class="proj reveal">
+      <div class="proj-top" onclick="toggleProj(this)">
+        <div>
+          <div class="proj-name">Cleaf</div>
+          <div class="proj-tagline">Five-agent AI orchestration engine automating healthcare operational workflows.</div>
+        </div>
+        <span class="proj-tag tag-ai">AI · HEALTHCARE</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-stack">
+          <span class="chip">LangGraph</span><span class="chip">FastAPI</span><span class="chip">Next.js</span>
+          <span class="chip">PostgreSQL</span><span class="chip">Redis</span><span class="chip">Python</span>
+        </div>
+        <div class="expand" onclick="toggleProj(this.closest('.proj').querySelector('.proj-top'))">
+          <span class="x">+</span> <span>READ THE BUILD</span>
+          <span class="proj-metric" style="margin-left:auto">5 AGENTS</span>
+        </div>
+        <div class="proj-detail">
+          <ul>
+            <li>Engineered a five-agent LangGraph orchestration engine that autonomously detects missed visits and triggers escalation workflows.</li>
+            <li>Developed caregiver recommendation logic using real-time scheduling and availability data.</li>
+            <li>Built operational intelligence dashboards tracking service risk and resolution metrics; automated reporting pipelines.</li>
+          </ul>
+          <div class="proj-foot">
+            <a href="https://github.com/ProjectsofSadia" target="_blank">↗ GitHub</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SKILLS ===== -->
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">02</span>
+      <span class="sec-title">The Stack</span>
+      <span class="sec-meta">WHAT I BUILD WITH</span>
+    </div>
+    <div class="skill-grid">
+      <div class="skill-card reveal">
+        <h3>AI &amp; Machine Learning</h3>
+        <div class="skill-tags">
+          <span>LangGraph</span><span>LLMs</span><span>RAG</span><span>AI Agents</span><span>Agentic Workflows</span>
+          <span>Prompt Engineering</span><span>AI Evaluation</span><span>Model Deployment</span><span>Fine-tuning</span>
+          <span>MLOps</span><span>NLP</span><span>Vector Databases</span><span>XGBoost</span><span>PyTorch</span><span>Scikit-learn</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>Motorsports &amp; Data</h3>
+        <div class="skill-tags">
+          <span>F1 Telemetry Analysis</span><span>FastF1</span><span>Race Strategy Modelling</span>
+          <span>Tire Degradation Modelling</span><span>Monte Carlo Simulation</span><span>Time-Series Analysis</span>
+          <span>Real-Time Pipelines</span><span>Performance Analytics</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>Languages &amp; Frameworks</h3>
+        <div class="skill-tags">
+          <span>Python</span><span>Java</span><span>SQL</span><span>TypeScript</span><span>JavaScript</span><span>MATLAB</span>
+          <span>FastAPI</span><span>React</span><span>Next.js</span><span>Node.js</span><span>Pandas</span><span>NumPy</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>Infrastructure &amp; Data</h3>
+        <div class="skill-tags">
+          <span>Docker</span><span>AWS</span><span>PostgreSQL</span><span>Redis</span><span>REST APIs</span><span>WebSockets</span>
+          <span>Git</span><span>CI/CD</span><span>Power BI</span><span>Tableau</span><span>Cloud Deployment</span><span>System Design</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIENCE ===== -->
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">03</span>
+      <span class="sec-title">Experience</span>
+      <span class="sec-meta">THE TRACK RECORD</span>
+    </div>
+    <div class="xp reveal">
+      <div class="xp-item now">
+        <div class="xp-date">JAN 2024 — PRESENT</div>
+        <div class="xp-role">Operations &amp; Data Analyst</div>
+        <div class="xp-co">Marks Home Care · Brooklyn, NY</div>
+        <p>Built KPI dashboards monitoring 200+ caregiver schedules in SQL, Python, and Power BI, reducing manual reporting time by 30% through scripted data pipelines.</p>
+      </div>
+      <div class="xp-item">
+        <div class="xp-date">OCT 2023 — DEC 2023</div>
+        <div class="xp-role">Pharmacy Technician</div>
+        <div class="xp-co">Newkirk Pharmacy · Brooklyn, NY</div>
+        <p>Processed prescriptions and maintained data integrity across patient, prescription, and inventory systems in compliance with healthcare regulations.</p>
+      </div>
+      <div class="xp-item">
+        <div class="xp-date">FEB 2021 — JUL 2023</div>
+        <div class="xp-role">Research Assistant</div>
+        <div class="xp-co">Ujjibon · Bangladesh</div>
+        <p>Built data analysis pipelines across research projects; synthesized findings into strategic recommendations for evidence-based decisions.</p>
+      </div>
+    </div>
+
+    <div class="badge-row reveal" style="margin-top:48px">
+      <div class="badge">
+        <div class="flag">◆ SELECTED · RECOGNITION</div>
+        <h4>AI Statics Judge — Formula Student 2026</h4>
+        <p>Selected to the international AI judging panel at Silverstone, UK — one of the most competitive applied-AI environments in motorsport.</p>
+      </div>
+      <div class="badge">
+        <div class="flag">◆ EDUCATION</div>
+        <h4>B.S. Computer Science — AI</h4>
+        <p>New York Institute of Technology · Expected Dec 2028.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact" class="contact">
+  <div class="wrap">
+    <div class="eyebrow">LET'S BUILD SOMETHING FAST</div>
+    <h2>Start your engines.</h2>
+    <p style="color:var(--mut);max-width:520px;margin:0 auto;font-size:16px">
+      Open to AI engineering roles, motorsports data positions, and internships.
+      If you're building at the edge of real-time AI, let's talk.
+    </p>
+    <div class="contact-links">
+      <a href="mailto:sadiaanowar20@gmail.com">✉ sadiaanowar20@gmail.com</a>
+      <a href="https://github.com/ProjectsofSadia" target="_blank">↗ GitHub</a>
+      <a href="https://linkedin.com/in/asadia" target="_blank">↗ LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">© 2026 Kazi Sadia Anowar · Brooklyn, NY</div>
+</footer>
+
+<script>
+  // expand/collapse projects
+  function toggleProj(el){ el.closest('.proj').classList.toggle('open'); }
+
+  // scroll reveal
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // count-up telemetry
+  function animateCount(el){
+    const target = +el.dataset.count;
+    const isYear = target===2026;
+    const dur = 1400; const t0 = performance.now();
+    const suffix = el.querySelector('.u') ? el.querySelector('.u').outerHTML : '';
+    function frame(now){
+      const p = Math.min((now-t0)/dur,1);
+      const eased = 1-Math.pow(1-p,3);
+      let val = Math.floor(eased*target);
+      el.innerHTML = (isYear? val : val.toLocaleString()) + suffix;
+      if(p<1) requestAnimationFrame(frame);
+      else el.innerHTML = (isYear? target : target.toLocaleString()) + suffix;
     }
-    
-    generateRealisticData() {
-        const now = new Date();
-        const hourOfDay = now.getHours();
-        const readings = {};
-        
-        // Temperature with daily and seasonal cycles
-        if (this.sensorTypes.includes('temperature')) {
-            let temp = this.baselines.temperature;
-            const dailyVariation = 8 * Math.sin((hourOfDay - 6) * Math.PI / 12);
-            temp += dailyVariation;
-            readings.temperature = Math.round(temp * 10) / 10;
-        }
-        
-        // AI Anomaly Detection
-        const anomalies = this.detectAnomalies(readings);
-        
-        return {
-            nodeId: this.nodeId,
-            location: this.location,
-            city: this.city,
-            readings: readings,
-            timestamp: now.toISOString(),
-            anomalies: anomalies
-        };
-    }
-    
-    detectAnomalies(readings) {
-        const anomalies = [];
-        
-        // Temperature anomalies
-        if (readings.temperature > 35) {
-            anomalies.push({
-                type: 'temperature',
-                severity: readings.temperature > 40 ? 'CRITICAL' : 'WARNING',
-                message: 'Extreme temperature detected: ' + readings.temperature + '°C',
-                confidence: 0.95
-            });
-        }
-        
-        return anomalies;
-    }
-}
-
-// Real-time API with WebSocket streaming
-const express = require('express');
-const { Server } = require('socket.io');
-const app = express();
-
-app.post('/api/sensor-data', async (req, res) => {
-    try {
-        const data = {
-            ...req.body,
-            id: Date.now().toString(),
-            receivedAt: new Date(),
-            processed: false
-        };
-
-        // AI Anomaly Detection
-        const anomalies = detectAnomalies(data.readings);
-        
-        // Broadcast to connected clients
-        io.emit('sensor_data', data);
-        
-        res.json({ 
-            success: true, 
-            id: data.id,
-            anomalies: anomalies,
-            processed: true
-        });
-    } catch (error) {
-        res.status(500).json({ error: 'Processing failed' });
-    }
-});`
-            },
-            f1predictor: {
-                title: "F1 Race Winner Prediction Model",
-                github: "https://github.com/ProjectsofSadia/f1-predictor",
-                code: `// F1 Race Winner Prediction Model
-// Machine Learning Implementation
-
-class F1PredictionModel {
-    constructor() {
-        this.model = null;
-        this.data = null;
-        this.featureImportance = {};
-        this.isModelTrained = false;
-        this.currentSeason = '2025';
-        this.drivers = this.initializeDrivers();
-        this.teams = this.initializeTeams();
-    }
-    
-    initializeDrivers() {
-        return [
-            { 
-                name: 'Oscar Piastri', 
-                team: 'McLaren', 
-                skill: 0.92, 
-                experience: 0.75, 
-                consistency: 0.94, 
-                currentPoints: 99 
-            },
-            { 
-                name: 'Lando Norris', 
-                team: 'McLaren', 
-                skill: 0.91, 
-                experience: 0.82, 
-                consistency: 0.90, 
-                currentPoints: 89 
-            }
-            // More drivers...
-        ];
-    }
-    
-    async trainModel() {
-        const startTime = Date.now();
-        const modelType = document.getElementById('modelType').value;
-        
-        // Calculate feature importance based on current season dynamics
-        this.featureImportance = {
-            'Driver Skill': 0.25,
-            'Car Performance': 0.22,
-            'Track Suitability': 0.18,
-            'Championship Momentum': 0.15,
-            'Team Strategy': 0.12,
-            'Race Conditions': 0.08
-        };
-        
-        // Simulate model performance metrics
-        const performance = this.calculateModelPerformance(modelType);
-        
-        this.isModelTrained = true;
-        
-        return performance;
-    }
-    
-    predictRaceWinner(race) {
-        const predictions = [];
-        
-        this.drivers.forEach(driver => {
-            const team = this.teams.find(t => t.name === driver.team);
-            
-            // Calculate prediction score based on various factors
-            let score = 0;
-            
-            // Driver skill (25% weight)
-            score += driver.skill * 0.25;
-            
-            // Current team performance (22% weight)
-            score += team.carPerformance * 0.22;
-            
-            // Track suitability (18% weight)
-            const trackSuitability = this.calculateTrackSuitability(driver, team, race);
-            score += trackSuitability * 0.18;
-            
-            // Current championship momentum (15% weight)
-            const momentum = this.calculateMomentum(driver);
-            score += momentum * 0.15;
-            
-            predictions.push({
-                driver: driver.name,
-                team: driver.team,
-                score: Math.max(0, Math.min(1, score)),
-                confidence: this.calculateConfidence(driver, team, score)
-            });
-        });
-        
-        // Sort by score
-        predictions.sort((a, b) => b.score - a.score);
-        
-        return {
-            winner: predictions[0],
-            podium: predictions.slice(0, 3),
-            allPredictions: predictions
-        };
-    }
-}`
-            },
-            ecosentinel: {
-                title: "EcoSentinel - Climate Management Platform",
-                github: "https://github.com/ProjectsofSadia/ecosentinel",
-                code: `// EcoSentinel - Climate Management Platform
-// IoT Network and Real-time Analytics
-
-class EcoSentinelNetwork {
-    constructor() {
-        this.sensors = [];
-        this.networkStats = {
-            totalSensors: 0,
-            activeSensors: 0,
-            dataPointsPerMinute: 0,
-            networkUptime: Date.now()
-        };
-        
-        this.createGlobalNetwork();
-    }
-    
-    createGlobalNetwork() {
-        const sensorLocations = [
-            { city: 'San Francisco', lat: 37.7749, lon: -122.4194, isUrban: true, count: 5 },
-            { city: 'New York', lat: 40.7128, lon: -74.0060, isUrban: true, count: 8 },
-            { city: 'Los Angeles', lat: 34.0522, lon: -118.2437, isUrban: true, count: 6 }
-            // More cities...
-        ];
-        
-        sensorLocations.forEach(location => {
-            for (let i = 0; i < location.count; i++) {
-                const sensorId = location.city.toLowerCase().replace(' ', '_') + '_' + (i + 1);
-                
-                const sensor = new AdvancedSensorSimulator({
-                    nodeId: sensorId,
-                    location: {
-                        lat: location.lat + (Math.random() - 0.5) * 0.1,
-                        lon: location.lon + (Math.random() - 0.5) * 0.1,
-                        isUrban: location.isUrban
-                    },
-                    city: location.city,
-                    sensorTypes: ['temperature', 'co2_level', 'air_quality', 'humidity'],
-                    apiUrl: 'http://localhost:3001'
-                });
-                
-                this.sensors.push(sensor);
-            }
-        });
-    }
-    
-    startNetwork() {
-        console.log('Starting EcoSentinel Global Sensor Network...');
-        
-        this.sensors.forEach((sensor, index) => {
-            setTimeout(() => {
-                sensor.start(6000 + Math.random() * 4000);
-            }, index * 1000);
-        });
-        
-        this.startNetworkMonitoring();
-    }
-    
-    startNetworkMonitoring() {
-        setInterval(() => {
-            const activeSensors = this.sensors.filter(s => s.isRunning).length;
-            const uptime = Math.floor((Date.now() - this.networkStats.networkUptime) / 1000);
-            
-            console.log('Network Status: ' + activeSensors + '/' + this.sensors.length + ' active | Uptime: ' + uptime + 's');
-        }, 30000);
-    }
-}
-
-// Real-time API with AI anomaly detection
-app.post('/api/sensor-data', async (req, res) => {
-    try {
-        const data = { ...req.body, id: Date.now().toString(), receivedAt: new Date() };
-
-        // AI Anomaly Detection
-        const anomalies = detectAnomalies(data.readings);
-        if (anomalies.length > 0) {
-            const alert = {
-                id: Date.now().toString(),
-                severity: anomalies[0].severity,
-                message: anomalies[0].message,
-                location: data.location,
-                timestamp: new Date()
-            };
-            
-            // Broadcast alert via WebSocket
-            io.emit('alert', alert);
-        }
-
-        // Store and broadcast data
-        sensorData.unshift(data);
-        io.emit('sensor_data', data);
-        
-        res.json({ success: true, anomalies: anomalies });
-    } catch (error) {
-        res.status(500).json({ error: 'Processing failed' });
-    }
-});`
-            },
-            skinglowai: {
-                title: "SkinGlow AI - Skincare Analysis Platform",
-                github: "https://github.com/ProjectsofSadia/skinglow-ai",
-                code: `// SkinGlow AI - AI-Powered Skincare Analysis
-// React Application with AI Integration
-
-export class SkinAnalysisEngine {
-    constructor() {
-        this.skinTypes = ['Oily', 'Dry', 'Combination', 'Sensitive', 'Normal'];
-        this.commonIssues = [
-            'Acne', 'Blackheads', 'Enlarged Pores', 'Fine Lines', 'Wrinkles', 
-            'Dark Spots', 'Hyperpigmentation', 'Dryness', 'Oiliness', 'Redness'
-        ];
-    }
-
-    async analyzeImage(imageData, userInfo = {}) {
-        const analysisStart = Date.now();
-        
-        await this.simulateProcessing(3000);
-        
-        const analysis = await this.generateAnalysis(imageData, userInfo);
-        const analysisTime = Date.now() - analysisStart;
-        
-        return {
-            ...analysis,
-            processingTime: analysisTime,
-            timestamp: new Date().toISOString(),
-            confidence: this.calculateOverallConfidence(analysis)
-        };
-    }
-
-    async generateAnalysis(imageData, userInfo) {
-        const skinType = this.determineSkinType(userInfo);
-        const skinTone = this.determineSkinTone(imageData, userInfo);
-        const detectedIssues = this.detectSkinIssues(userInfo);
-        const skinScore = this.calculateSkinScore(detectedIssues, userInfo);
-        
-        return {
-            skinType,
-            skinTone,
-            issues: detectedIssues,
-            skinScore,
-            recommendations: await this.generateRecommendations(skinType, detectedIssues, skinTone),
-            lifestyle: this.generateLifestyleAdvice(skinType, detectedIssues),
-            routine: this.generateSkinRoutine(skinType, detectedIssues)
-        };
-    }
-    
-    determineSkinType(userInfo) {
-        const { concerns = [], description = '', skinType = '' } = userInfo;
-        
-        if (skinType) return skinType;
-        
-        const oilyKeywords = ['oily', 'greasy', 'shiny', 'large pores', 'acne'];
-        const dryKeywords = ['dry', 'flaky', 'tight', 'rough', 'itchy'];
-        const sensitiveKeywords = ['sensitive', 'irritated', 'red', 'burning'];
-        
-        const text = description.toLowerCase();
-        
-        let scores = {
-            Oily: oilyKeywords.filter(keyword => text.includes(keyword)).length,
-            Dry: dryKeywords.filter(keyword => text.includes(keyword)).length,
-            Sensitive: sensitiveKeywords.filter(keyword => text.includes(keyword)).length,
-            Combination: concerns.includes('Oiliness') && concerns.includes('Dryness') ? 3 : 0,
-            Normal: 0
-        };
-        
-        return Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
-    }
-}
-
-// Affiliate Link Generation
-export const generateAffiliateLink = (retailer, productId, productName = '') => {
-    const encodedName = encodeURIComponent(
-        productName.toLowerCase().replace(/\\s+/g, '-').replace(/[^a-z0-9-]/g, '')
-    );
-    
-    switch(retailer.toLowerCase()) {
-        case 'amazon':
-            return 'https://www.amazon.com/dp/' + productId + '?tag=skinglow-20';
-        case 'sephora':
-            return 'https://www.sephora.com/product/' + encodedName + '-' + productId;
-        default:
-            return '#';
-    }
-};`
-            },
-            facialanalytics: {
-                title: "Facial Analytics Pipeline",
-                github: "https://github.com/ProjectsofSadia/facial-analytics",
-                code: `# Facial Analytics Pipeline - Computer Vision Implementation
-# Advanced facial recognition and analytics system using OpenCV
-
-import cv2
-import numpy as np
-import os
-import time
-import threading
-import queue
-from sklearn.cluster import DBSCAN
-import pandas as pd
-import matplotlib.pyplot as plt
-
-class FacialAnalyticsPipeline:
-    """
-    Production-grade facial analytics pipeline with multi-threading support,
-    advanced detection algorithms, and comprehensive analytics.
-    """
-    
-    def __init__(self, model_path="models", output_path="output"):
-        self.model_path = model_path
-        self.output_path = output_path
-        
-        # Create necessary directories
-        os.makedirs(model_path, exist_ok=True)
-        os.makedirs(output_path, exist_ok=True)
-        
-        # Initialize models
-        self._initialize_models()
-        
-        # Performance metrics
-        self.processing_times = []
-        self.detection_stats = {}
-        
-        # Threading resources
-        self.result_queue = queue.Queue()
-        self.processing_queue = queue.Queue()
-        self.max_threads = os.cpu_count() or 4
-    
-    def _initialize_models(self):
-        """Load and initialize all detection and recognition models"""
-        print("Initializing facial analysis models...")
-        
-        # DNN-based face detector (more accurate)
-        dnn_model_file = os.path.join(self.model_path, "res10_300x300_ssd_iter_140000.caffemodel")
-        dnn_config_file = os.path.join(self.model_path, "deploy.prototxt")
-        
-        if os.path.exists(dnn_model_file) and os.path.exists(dnn_config_file):
-            self.face_detector_dnn = cv2.dnn.readNetFromCaffe(dnn_config_file, dnn_model_file)
-            print("DNN face detector loaded")
-        
-        # Fallback cascade detector
-        cascade_path = cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
-        self.face_cascade = cv2.CascadeClassifier(cascade_path)
-        print("Cascade face detector loaded")
-    
-    def analyze_image(self, image_path, filename):
-        """Analyze a single image for faces and associated attributes"""
-        start_time = time.time()
-        
-        try:
-            # Read the image
-            img = cv2.imread(image_path)
-            if img is None:
-                return None
-            
-            height, width = img.shape[:2]
-            annotated_img = img.copy()
-            
-            faces_data = []
-            face_count = 0
-            
-            # DNN Face Detection
-            if self.face_detector_dnn is not None:
-                blob = cv2.dnn.blobFromImage(img, 1.0, (300, 300), [104, 117, 123], False, False)
-                self.face_detector_dnn.setInput(blob)
-                detections = self.face_detector_dnn.forward()
-                
-                for i in range(detections.shape[2]):
-                    confidence = detections[0, 0, i, 2]
-                    if confidence > 0.7:
-                        box = detections[0, 0, i, 3:7] * np.array([width, height, width, height])
-                        (x1, y1, x2, y2) = box.astype("int")
-                        
-                        x1, y1 = max(0, x1), max(0, y1)
-                        x2, y2 = min(width, x2), min(height, y2)
-                        w, h = x2 - x1, y2 - y1
-                        
-                        if w > 0 and h > 0:
-                            face_count += 1
-                            face_img = img[y1:y2, x1:x2].copy()
-                            
-                            face_data = {
-                                "id": face_count,
-                                "bbox": [int(x1), int(y1), int(w), int(h)],
-                                "confidence": float(confidence),
-                                "position": {
-                                    "rel_x": float(x1 / width),
-                                    "rel_y": float(y1 / height),
-                                    "rel_size": float((w * h) / (width * height))
-                                }
-                            }
-                            
-                            # Additional face analysis
-                            face_data.update(self._analyze_face(face_img))
-                            faces_data.append(face_data)
-                            
-                            # Draw annotations
-                            self._annotate_face(annotated_img, face_data)
-            
-            elapsed = time.time() - start_time
-            self.processing_times.append(elapsed)
-            
-            return {
-                "filename": filename,
-                "faces_count": face_count,
-                "faces": faces_data,
-                "dimensions": {"width": width, "height": height},
-                "processing_time": elapsed
-            }
-            
-        except Exception as e:
-            return {"filename": filename, "error": str(e), "faces_count": 0}
-    
-    def _analyze_face(self, face_img):
-        """Analyze face attributes like age, gender, emotion"""
-        face_data = {"detection_method": "dnn"}
-        
-        try:
-            # Get dominant colors
-            face_data["dominant_colors"] = self._extract_dominant_colors(face_img)
-            
-            # Face blur detection 
-            face_data["blur_score"] = self._detect_blur(face_img)
-            
-            # Lighting quality
-            face_data["lighting_quality"] = self._assess_lighting(face_img)
-            
-        except Exception as e:
-            print(f"Error in face analysis: {str(e)}")
-        
-        return face_data`
-            }
-        };
-
-        function showProjectCode(projectId) {
-            const project = projectCodes[projectId];
-            if (!project) return;
-            
-            document.getElementById('codeModalTitle').textContent = project.title;
-            document.getElementById('codeContent').innerHTML = '<pre><code>' + project.code + '</code></pre>';
-            document.getElementById('githubLink').href = project.github;
-            document.getElementById('codeModal').classList.remove('hidden');
-            
-            // Add click to copy functionality
-            const codeContent = document.getElementById('codeContent');
-            codeContent.addEventListener('click', function() {
-                navigator.clipboard.writeText(project.code).then(() => {
-                    // Show temporary success message
-                    const originalContent = this.innerHTML;
-                    this.innerHTML = '<div class="text-green-400 text-center py-8"><i class="fas fa-check text-2xl mb-2"></i><br>Code copied to clipboard!</div>';
-                    setTimeout(() => {
-                        this.innerHTML = originalContent;
-                    }, 2000);
-                });
-            });
-        }
-
-        function closeCodeModal() {
-            document.getElementById('codeModal').classList.add('hidden');
-        }
-
-        // Close modal when clicking outside
-        document.getElementById('codeModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeCodeModal();
-            }
-        });
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Animate skill bars on scroll
-        const observerOptions = {
-            threshold: 0.5,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const skillBars = entry.target.querySelectorAll('.skill-bar');
-                    skillBars.forEach(bar => {
-                        const width = bar.style.width;
-                        bar.style.width = '0%';
-                        setTimeout(() => {
-                            bar.style.width = width;
-                        }, 200);
-                    });
-                }
-            });
-        }, observerOptions);
-
-        // Observe skills section
-        const skillsSection = document.getElementById('skills');
-        if (skillsSection) {
-            observer.observe(skillsSection);
-        }
-
-        // Add scroll effect to navbar
-        window.addEventListener('scroll', () => {
-            const navbar = document.querySelector('nav');
-            if (window.scrollY > 100) {
-                navbar.classList.add('bg-white', 'shadow-lg');
-                navbar.classList.remove('bg-white/90');
-            } else {
-                navbar.classList.remove('bg-white', 'shadow-lg');
-                navbar.classList.add('bg-white/90');
-            }
-        });
-
-        // Animate elements on scroll
-        const animateOnScroll = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, { threshold: 0.1 });
-
-        // Apply animation to all elements with animate classes
-        document.querySelectorAll('.animate-slide-up').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'all 0.8s ease-out';
-            animateOnScroll.observe(el);
-        });
-    </script>
+    requestAnimationFrame(frame);
+  }
+  const telIO = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ animateCount(e.target); telIO.unobserve(e.target);} });
+  },{threshold:.5});
+  document.querySelectorAll('.tele-val[data-count]').forEach(el=>telIO.observe(el));
+</script>
 </body>
 </html>
